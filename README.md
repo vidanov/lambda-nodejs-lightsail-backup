@@ -65,7 +65,7 @@ We need to set up some permissions, so that our Lambda function has enough right
  https://raw.githubusercontent.com/vidanov/lambda-nodejs-lightsail-backup/master/index.js
  Change the name of the ***instanceName*** in the function and set up the frequency of the backups.
  
-  const instanceName ="LAMP_Stack-2GB-Frankfurt-1" // Put your instance name here http://take.ms/dChbs
+  const instanceName ="LAMP_Stack-2GB-Frankfurt-1" // Replace with your instance name, get it at your Lightsail console s. http://take.ms/dChbs
         const backupDaysMax = 7; // keep at least 7 daily backups 
         const backupWeeksMax = 4; // keep at least 4  weekly  backups
         const backupMonthsMax = 3; // keep at least 3  monthly  backups
@@ -77,4 +77,9 @@ We need to set up some permissions, so that our Lambda function has enough right
  1. Select 'Configure test events' in the drop down left from the TEST button on the top of the window. Use preselected values.
  2. Give the name to the event ***TestMyFunction*** and push the CREATE button
  3. Push the TEST button 
- 4. The new snapshot will be created for your function.
+ 4. The new snapshot will be created for your instance. 
+ 
+ 
+The script will remove old backups, that are not in the range of dates you set. The Lightsail backups are incremental and they are very economical to use for you.
+
+If you have more instances to back up, you can create more Lambda functions like this, you can omit the Step 1 and Step 2 for them.
