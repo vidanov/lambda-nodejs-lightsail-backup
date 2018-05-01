@@ -120,7 +120,7 @@ exports.handler = (event, context, callback) => {
                    // DO NOT DELETE LAST backupWeeksMax WEEKS BACKUPS
                    if (backupDaysTillNow>backupDaysMax && backupDaysTillNow<=backupWeeksMax*7 && backupDate.getDay()==0) { saveBackup=true;} 
 				   // DO NOT DELETE LAST backupWeeksMax MONTHS BACKUPS
-                   if (backupDaysTillNow>backupWeeksMax*7 && backupDaysTillNow<=backupMonthsMax*30 && backupDate.getDate()>21  && backupDate.getDay()==0) { saveBackup=true;} 
+                   if (backupDaysTillNow>backupWeeksMax*7 && backupDaysTillNow<=backupMonthsMax*30 && backupDate.getDate()<8  && backupDate.getDay()==0) { saveBackup=true;} 
                    
                    if (saveBackup) {
                    		                        // WE KEPT THESE BACKUPS
