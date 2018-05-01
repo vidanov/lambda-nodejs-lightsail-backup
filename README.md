@@ -96,7 +96,7 @@ Licensed under the Apache License, Version 2.0 (the "License"). You may not use 
 
 http://aws.amazon.com/apache2.0/
 
-## LICENCE
+## LICENSE
 Copyright 2018 Alexey Vidanov
 
 Licensed under the Apache License, Version 2.0 (the "License");
