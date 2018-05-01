@@ -16,6 +16,8 @@ We will use the AWS Lambda.
 
 We need to set up some permissions, so that our Lambda function has enough rights to do the job. 
 
+***ATTENTION!*** The script will remove all snapshots you created if they are out of range. To keep them you need modify the script. I plan to change it to keep all manually created backups. But now be careful!
+
 ## Step 1. Create the IAM policy
  1. Sign up to the AWS console here https://aws.amazon.com
  2. Put IAM in the search field or go to https://console.aws.amazon.com/iam/
