@@ -83,3 +83,7 @@ We need to set up some permissions, so that our Lambda function has enough right
 The script will remove old backups, that are not in the range of dates you set. The Lightsail backups are incremental and they are very economical to use for you.
 
 If you have more instances to back up, you can create more Lambda functions like this, you can omit the Step 1 and Step 2 for them.
+
+JFYI: Weekly and monthly backups will be saved on Sundays. You need at least 7 daily backups for weekly and monthly backups work correctly.
+
+![Backups have nice names](http://take.ms/K1CUe)
