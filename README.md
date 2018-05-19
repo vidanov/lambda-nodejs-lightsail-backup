@@ -63,7 +63,7 @@ We need to set up some permissions, so that our Lambda function has enough right
  4. Use the preselected AUTHOR FROM SCRATCH tab, give the name for the function ***LightSailBackup***
  5. Use the "Node.js 6.10" for Runtime and "Choose an existing role" for the Role. Choose the ***LightsailsnapshotsRole*** role you created in the step 2. Push the button CREATE FUNCTION
  6. In the panel Add triggers at the left click the CLOUD WATCH EVENTS link. In the 'Rule' section select 'Create a new rule'. Give the name ***daily*** in the 'Schedule expression' section put ***rate(1 day)*** and push the ADD button.
- 7. Click on the block "LightSailBackup" again and past in the 'Function Code' field the code from here  (the index.js contents in this repository)
+ 7. Click on the block "LightSailBackup" again and paste in the 'Function Code' field the code from here  (the index.js contents in this repository)
  https://raw.githubusercontent.com/vidanov/lambda-nodejs-lightsail-backup/master/index.js
  Change the name of the ***instanceName*** in the function and set up the frequency of the backups.
  
