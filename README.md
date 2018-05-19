@@ -67,12 +67,20 @@ We need to set up some permissions, so that our Lambda function has enough right
  https://raw.githubusercontent.com/vidanov/lambda-nodejs-lightsail-backup/master/index.js
  Change the name of the ***instanceName*** in the function and set up the frequency of the backups.
  
-  const instanceName ="LAMP_Stack-2GB-Frankfurt-1" // Replace with your instance name, get it at your Lightsail console s. http://take.ms/dChbs
+  <pre><code>
+        const instanceName ="LAMP_Stack-2GB-Frankfurt-1" // Replace with your instance name, get it at your Lightsail console s. http://take.ms/dChbs
+        
         const backupDaysMax = 7; // keep at least 7 daily backups 
+        
         const backupWeeksMax = 4; // keep at least 4  weekly  backups
+        
         const backupMonthsMax = 3; // keep at least 3  monthly  backups
- Change the region accordingly to your settings in the line
+</code></pre>        
+
+Change the region accordingly to your settings in the line
+
         AWS.config.update({ region: 'eu-central-1' });
+ 
  8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
  9. Push SAVE button at the top right.
 
