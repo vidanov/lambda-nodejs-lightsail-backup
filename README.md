@@ -71,8 +71,10 @@ We need to set up some permissions, so that our Lambda function has enough right
         const backupDaysMax = 7; // keep at least 7 daily backups 
         const backupWeeksMax = 4; // keep at least 4  weekly  backups
         const backupMonthsMax = 3; // keep at least 3  monthly  backups
-
- 8. Push SAVE button at the top right.
+ Change the region accordingly to your settings in the line
+        AWS.config.update({ region: 'eu-central-1' });
+ 8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
+ 9. Push SAVE button at the top right.
 
 ## Step 4. Test the function
 
