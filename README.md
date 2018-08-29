@@ -1,8 +1,8 @@
 # Automatic backups for AWS Lightsail
 
-The AWS Lightsail is a great service to start with. And the Lightsail backups are no brainer to use. They are incremental. You pay only for the differences. It means you can create a lot of backups without a great expense on them. It keeps your work safe. But sorrowfully you do not have a possibility to set up automatic backups from the console of the service. Till now! :) 
+This script for the AWS Lambda NodeJS is to automate the backup process for your AWS Lightsail instances easily. 
 
-This script for the AWS Lambda NodeJS is to automate the backup process. 
+The AWS Lightsail is an excellent hosting service to start with it. The Lightsail backups are a no-brainer to use. They are very powerful and incremental. You pay only for the differences in your files. It means you can create a lot of backups without spending a fortune on them. It keeps your work safe. But sorrowfully you cannot set up automatic backups from the console of the service. Till now! :) 
 
 **Benefits**
 - Free of charge!
@@ -77,9 +77,22 @@ We need to set up some permissions, so that our Lambda function has enough right
         const backupMonthsMax = 3; // keep at least 3  monthly  backups
 </code></pre>        
 
-Change the region accordingly to your settings in the line
+Set the name and the region accordingly to your settings in the line
 
-        AWS.config.update({ region: 'eu-central-1' });
+       var instances = [
+        		{name: "your-instance-name-here", region: "your-region-here"}
+     		];
+ 
+ Your instance name and region can be found here (see image): 
+	 http://take.ms/3KOAo
+
+Thanks to Joram Teusink (https://github.com/teusink) you can make the backups for several instances in one script. 
+Here is an example how to make backups for different instances in one script (do not forget to put the commas!):
+	 var instances = [
+		{name: "LAMP_Stack-2GB-Frankfurt-1", region: "eu-central-1"},
+	 {name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3"},
+	];
+ 
  
  8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
  9. Push SAVE button at the top right.
