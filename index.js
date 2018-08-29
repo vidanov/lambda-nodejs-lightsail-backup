@@ -9,6 +9,7 @@ exports.handler = (event, context, callback) => {
 	var instances = [
 		{name: "your-instance-name-here", region: "your-region-here"}
 		];
+	// Your instance name and region can be found here (see image): http://take.ms/dChbs
 	
 	// ================================				
 	// Define snapshot settings
