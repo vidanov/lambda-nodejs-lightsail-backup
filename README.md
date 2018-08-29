@@ -1,8 +1,8 @@
 # Automatic backups for AWS Lightsail
 
-The AWS Lightsail is a great service, but you do not have a possibility to set up automatic backups from the console of the service. 
+The AWS Lightsail is a great service to start with. And the Lightsail backups are no brainer to use. They are incremental. You pay only for the differences. It means you can create a lot of backups without a great expense onf them. It keeps your work safe. But sorrowfully you do not have a possibility to set up automatic backups from the console of the service. Till now! :) 
 
-I created a script for the AWS Lambda NodeJS to automate the process. 
+This script for the AWS Lambda NodeJS is to automate the backup process. 
 
 **Benefits**
 - Free of charge!
