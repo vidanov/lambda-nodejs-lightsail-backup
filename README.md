@@ -2,7 +2,7 @@
 
 This script for the AWS Lambda NodeJS is to automate the backup process for your AWS Lightsail instances easily. 
 
-The AWS Lightsail is an excellent hosting service to start with it. The Lightsail backups are a no-brainer to use. They are very powerful and incremental. You pay only for the differences in your files. It means you can create a lot of backups without spending a fortune on them. It keeps your work safe. But sorrowfully you cannot set up automatic backups from the console of the service. Till now! :) 
+The AWS Lightsail is an excellent hosting service to start with it. The Lightsail backups are a no-brainer to use. They are very powerful and incremental. You pay only for the differences in your files. It means you can create a lot of backups without spending a fortune on them. It keeps your work safe. But sorrowfully you cannot set up automatic backups from the console of the service. Now you can solve this problem easily with the help of this manual.
 
 **Benefits**
 - Free of charge!
@@ -68,7 +68,6 @@ We need to set up some permissions, so that our Lambda function has enough right
  Change the name of the ***instanceName*** in the function and set up the frequency of the backups.
  
   <pre><code>
-        const instanceName ="LAMP_Stack-2GB-Frankfurt-1" // Replace with your instance name, get it at your Lightsail console s. http://take.ms/dChbs
         
         const backupDaysMax = 7; // keep at least 7 daily backups 
         
@@ -78,21 +77,23 @@ We need to set up some permissions, so that our Lambda function has enough right
 </code></pre>        
 
 Set the name and the region accordingly to your settings in the line
-
+ <pre><code>
        var instances = [
         		{name: "your-instance-name-here", region: "your-region-here"}
      		];
- 
+</code></pre>
+
  Your instance name and region can be found here (see image): 
-	 http://take.ms/3KOAo
+http://take.ms/3KOAo
 
 Thanks to Joram Teusink (https://github.com/teusink) you can make the backups for several instances in one script. 
 Here is an example how to make backups for different instances in one script (do not forget to put the commas!):
+<pre><code>
 	 var instances = [
 		{name: "LAMP_Stack-2GB-Frankfurt-1", region: "eu-central-1"},
 	 {name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3"},
 	];
- 
+</code></pre> 
  
  8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
  9. Push SAVE button at the top right.
