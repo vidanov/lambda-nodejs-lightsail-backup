@@ -45,7 +45,7 @@ exports.handler = (event, context, callback) => {
 	function newDaySnapshot(instanceName, backupDaysNR) {
 		var params = {
 			instanceName: instanceName,
-			instanceSnapshotName: 'TAG' + backupDaysNR
+			instanceSnapshotName: instanceName + 'TAG' + backupDaysNR
 		};
 		Lightsail.createInstanceSnapshot(params, function (err, data) {
 			if (err) {
