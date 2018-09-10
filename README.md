@@ -27,7 +27,7 @@ We need to set up some permissions, so that our Lambda function has enough right
  2. Put IAM in the search field or go to https://console.aws.amazon.com/iam/
  3. Open the link POLICIES from the menu at the left and push the CREATE POLICY button.
  4. Go to the JSON tab. And put this text there
-
+<pre><code>
     {
             "Version": "2012-10-17",
             "Statement": [
@@ -46,6 +46,7 @@ We need to set up some permissions, so that our Lambda function has enough right
                 }
             ]
     }
+</code></pre>  
 
  5. Push the REVIEW POLICY button. Give it the name ***lightsail_snapshots*** to it, put ***lightsail backups*** in the description and push the CREATE POLICY button. 
  
