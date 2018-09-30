@@ -3,6 +3,7 @@
 exports.handler = (event, context, callback) => {
 
 // PLEASE DEFINE YOUR REGIONS & INSTANCES!	
+
 	
 	// ================================				
 	// Define region & instances
@@ -11,6 +12,7 @@ exports.handler = (event, context, callback) => {
 	const instances = [
 		{name: "Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"}
 		];
+
 	// Your instance name and region can be found here (see image): http://take.ms/3KOAo
 	// Define a unique label per instance for unique snapshot names
 	// Another example for multiple regions (do not forget to put the commas!):
@@ -19,6 +21,7 @@ exports.handler = (event, context, callback) => {
 	//	{name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3", label: "Bunny2"},
 	//	];
 	
+
 // YOU CAN ADJUST THE FREQUENCY AND NUMBER OF BACKUPS TO STORE HERE.
 	
 	// ================================				
@@ -28,6 +31,11 @@ exports.handler = (event, context, callback) => {
 	const backupDaysMax = 7; // keep at least 7 daily backups 
 	const backupWeeksMax = 4; // keep at least 4 weekly backups
 	const backupMonthsMax = 3; // keep at least 3 monthly backups
+
+	
+	
+// YOU DO NOT CHANGE ANYTHING HERE!
+	
 	
 // YOU DO NOT CHANGE ANYTHING HERE!
 	
@@ -62,8 +70,10 @@ exports.handler = (event, context, callback) => {
 	
 	function newDaySnapshot(instanceN, instanceL, backupDaysNR) {
 		var params = {
+
 			instanceName: instanceN,
 			instanceSnapshotName: instanceL + 'TAG' + backupDaysNR
+
 		};
 		Lightsail.createInstanceSnapshot(params, function (err, data) {
 			if (err) {
