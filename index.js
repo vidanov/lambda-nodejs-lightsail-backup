@@ -9,8 +9,7 @@ exports.handler = (event, context, callback) => {
 	// ================================
 	
 	const instances = [
-		{name: "digicy.cloud-v3-Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "digicy.cloud-v3-"},
-		{name: "hansminten.com-v1-Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "hansminten.com-v1-"}
+		{name: "Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"}
 		];
 	// Your instance name and region can be found here (see image): http://take.ms/3KOAo
 	// Define a unique label per instance for unique snapshot names
