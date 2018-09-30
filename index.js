@@ -2,14 +2,25 @@
 
 exports.handler = (event, context, callback) => {
 
+// PLEASE DEFINE YOUR REGIONS & INSTANCES!	
+	
 	// ================================				
 	// Define region & instances
 	// ================================
 	
-	var instances = [
-		{name: "your-instance-name-here", region: "your-region-here"}
+	const instances = [
+		{name: "digicy.cloud-v3-Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "digicy.cloud-v3-"},
+		{name: "hansminten.com-v1-Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "hansminten.com-v1-"}
 		];
-	// Your instance name and region can be found here (see image): http://take.ms/dChbs
+	// Your instance name and region can be found here (see image): http://take.ms/3KOAo
+	// Define a unique label per instance for unique snapshot names
+	// Another example for multiple regions (do not forget to put the commas!):
+	// var instances = [
+	//	{name: "LAMP_Stack-2GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"},
+	//	{name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3", label: "Bunny2"},
+	//	];
+	
+// YOU CAN ADJUST THE FREQUENCY AND NUMBER OF BACKUPS TO STORE HERE.
 	
 	// ================================				
 	// Define snapshot settings
@@ -19,14 +30,41 @@ exports.handler = (event, context, callback) => {
 	const backupWeeksMax = 4; // keep at least 4 weekly backups
 	const backupMonthsMax = 3; // keep at least 3 monthly backups
 	
+// YOU DO NOT CHANGE ANYTHING HERE!
+	
+	// ================================				
+	// Dates calculations for the name
+	// ================================
+
+	const now = new Date();
+	const start = new Date(now.getFullYear(), 0, 0);
+	const diff = now - start;
+	const oneDay = 1000 * 60 * 60 * 24;
+	const kw = Math.floor(diff / oneDay / 7) + 1;
+	const day = Math.floor(diff / oneDay);
+
+	console.log('KW of year: ' + kw);
+	console.log('day of year:' + day);
+	console.log('day of month:' + now.getDate());
+	console.log('day of week:' + now.getDay());
+	console.log('month:' + now.getMonth());
+
+	const backupDaysNR = now.getDay() % backupDaysMax;
+	const backupWeeksNR = kw % backupWeeksMax;
+	const backupMonthsNR = now.getMonth() % backupMonthsMax;
+
+	console.log('backupDaysNR:' + backupDaysNR);
+	console.log('backupWeeksNR:' + backupWeeksNR);
+	console.log('backupMonthsNR:' + backupMonthsNR);
+	
 	// ================================				
 	// Define Functions
 	// ================================
 	
-	function newDaySnapshot(instanceName, backupDaysNR) {
+	function newDaySnapshot(instanceN, instanceL, backupDaysNR) {
 		var params = {
-			instanceName: instanceName,
-			instanceSnapshotName: 'TAG' + backupDaysNR
+			instanceName: instanceN,
+			instanceSnapshotName: instanceL + 'TAG' + backupDaysNR
 		};
 		Lightsail.createInstanceSnapshot(params, function (err, data) {
 			if (err) {
@@ -56,28 +94,28 @@ exports.handler = (event, context, callback) => {
 
 			if (saveBackup) {
 				// WE KEPT THESE BACKUPS
-				console.log(`kept ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt}	${data.instanceSnapshots[i].name}`);
+				console.log(`Kept: ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt} ${data.instanceSnapshots[i].name}`);
 			} else {
 				// WE DELETED THESE BACKUPS
 				var paramsDelete = {
 				"instanceSnapshotName": data.instanceSnapshots[i].name
-				}
-				Lightsail.deleteInstanceSnapshot(paramsDelete, function () {
+				};
+				this.deleteInstanceSnapshot(paramsDelete, function () {
 
 				if (err) console.log(err, err.stack);
-				else console.log('Deleted ' + data.instanceSnapshots[i].name)
+				else console.log('Deleted: ' + data.instanceSnapshots[i].name);
 				});
 			}
 		}
 
 		// IF WE HAVE MORE BACKUPS WE SHOULD NAVIGATE TO THE NEXT PAGE AND USE RECURSION
 		console.log('\n\r=============== TOKEN =============== ');
-		console.log(data.nextPageToken);
 		if (typeof data.nextPageToken != 'undefined') {
+			console.log(data.nextPageToken);
 			var params = {
 				pageToken: data.nextPageToken
 			};
-			Lightsail.getInstanceSnapshots(params, getSnapshots);
+			this.getInstanceSnapshots(params, getSnapshots);
 			}
 		}
 	}
@@ -89,48 +127,28 @@ exports.handler = (event, context, callback) => {
 		// ================================
 
 		var instanceName = instances[i].name;
-		var region = instances[i].region;
+		var instanceRegion = instances[i].region;
+		var instanceLabel = instances[i].label;
 		var AWS = require('aws-sdk');
-		AWS.config.update({ region: region });
+		AWS.config.update({ region: instanceRegion });
 		var Lightsail = new AWS.Lightsail();
-
-		// ================================				
-		// Dates calculations for the name
-		// ================================
-
-		var now = new Date();
-		var start = new Date(now.getFullYear(), 0, 0);
-		var diff = now - start;
-		var oneDay = 1000 * 60 * 60 * 24;
-		var kw = Math.floor(diff / oneDay / 7) + 1;
-		var day = Math.floor(diff / oneDay)
-
-		console.log('KW of year: ' + kw);
-		console.log('day of year:' + day);
-		console.log('day of month:' + now.getDate());
-		console.log('day of week:' + now.getDay());
-		console.log('month:' + now.getMonth());
-
-		var backupDaysNR = now.getDay() % backupDaysMax;
-		var backupWeeksNR = kw % backupWeeksMax;
-		var backupMonatsNR = now.getMonth() % backupMonthsMax;
-
-		console.log('backupDaysNR:' + backupDaysNR);
-		console.log('backupWeeksNR:' + backupWeeksNR);
-		console.log('backupMonatsNR:' + backupMonatsNR);
-
+		
+		console.log("instanceName: " + instanceName);
+		console.log("instanceRegion: " + instanceRegion);
+		console.log("instanceLabel: " + instanceLabel);
+		
 		// ================================				
 		// Create a new snapshot
 		// ================================
 
 		var params = {
-			"instanceSnapshotName": "KW" + kw + "TAG" + backupDaysNR
-		}
+			"instanceSnapshotName": instanceLabel + "KW" + kw + "TAG" + backupDaysNR
+		};
 
 		Lightsail.getInstanceSnapshot(params, function (err, data) {
 			if (err) { //console.log(err, err.stack); // an error occurred
-				console.log('no backup, we do it new');
-				newDaySnapshot(instanceName, "KW" + kw + "TAG" + backupDaysNR)
+				console.log('No snapshot, we create a new one');
+				newDaySnapshot(instanceName, instanceLabel, "KW" + kw + "TAG" + backupDaysNR);
 
 			}
 			else {
@@ -143,7 +161,7 @@ exports.handler = (event, context, callback) => {
 				}
 				else {
 					console.log(data); // successful response
-					newDaySnapshot(instanceName, backupDaysNR)
+					newDaySnapshot(instanceName, instanceLabel, backupDaysNR);
 				}
 				});
 			}
