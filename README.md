@@ -115,8 +115,6 @@ The script will remove old backups, that are not in the range of dates you set. 
 
 JFYI: Weekly and monthly backups will be saved on Sundays. You need at least 7 daily backups for weekly and monthly backups work correctly.
 
-![Backups have nice names](http://take.ms/K1CUe)
-
 Copyright 2011-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
