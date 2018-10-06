@@ -91,14 +91,6 @@ Set the name and the region accordingly to your settings in the line
  Your instance name and region can be found here (see image): 
 http://take.ms/3KOAo
 
-Thanks to Joram Teusink (https://github.com/teusink) you can make the backups for several instances in one script. 
-Here is an example how to make backups for different instances in one script (do not forget to put the commas!):
-<pre><code>
-	 var instances = [
-		{name: "LAMP_Stack-2GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"},
-		{name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3", label: "Bunny2"},
-		];
-</code></pre> 
  
  8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
  9. Push SAVE button at the top right.
