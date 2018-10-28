@@ -20,7 +20,6 @@ exports.handler = (event, context, callback) => {
 	//	{name: "LAMP_Stack-2GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"},
 	//	{name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3", label: "Bunny2"},
 	//	];
-	
 
 // YOU CAN ADJUST THE FREQUENCY AND NUMBER OF BACKUPS TO STORE HERE.
 	
@@ -31,11 +30,6 @@ exports.handler = (event, context, callback) => {
 	const backupDaysMax = 7; // keep at least 7 daily backups 
 	const backupWeeksMax = 4; // keep at least 4 weekly backups
 	const backupMonthsMax = 3; // keep at least 3 monthly backups
-
-	
-	
-// YOU DO NOT CHANGE ANYTHING HERE!
-	
 	
 // YOU DO NOT CHANGE ANYTHING HERE!
 	
@@ -89,33 +83,39 @@ exports.handler = (event, context, callback) => {
 		if (err) {
 			console.log(err, err.stack); // an error occurred
 		}	else {
+			var instanceSnapshotNameLog = "";
 			for (var i = 0; i < data.instanceSnapshots.length; i++) { // BROWSE THROUGH SNAPSHOTS
-			backupDate = new Date(data.instanceSnapshots[i].createdAt);
-			backupDaysTillNow = Math.floor((now - backupDate) / oneDay);
-			saveBackup = false;
+				instanceSnapshotNameLog = data.instanceSnapshots[i].name;
+				backupDate = new Date(data.instanceSnapshots[i].createdAt);
+				backupDaysTillNow = Math.floor((now - backupDate) / oneDay);
+				saveBackup = false;
 
-			// DO NOT DELETE LAST backupDaysMax DAYS BACKUPS
-			if (backupDaysTillNow <= backupDaysMax) { saveBackup = true; }
-			// DO NOT DELETE LAST backupWeeksMax WEEKS BACKUPS
-			if (backupDaysTillNow > backupDaysMax && backupDaysTillNow <= backupWeeksMax * 7 && backupDate.getDay() == 0) { saveBackup = true; }
-			// DO NOT DELETE LAST backupWeeksMax MONTHS BACKUPS
-			if (backupDaysTillNow > backupWeeksMax * 7 && backupDaysTillNow <= backupMonthsMax * 30 && backupDate.getDate() < 8 && backupDate.getDay() == 0) { saveBackup = true; }
+				// DO NOT DELETE LAST backupDaysMax DAYS BACKUPS
+				if (backupDaysTillNow <= backupDaysMax) { saveBackup = true; }
+				// DO NOT DELETE LAST backupWeeksMax WEEKS BACKUPS
+				if (backupDaysTillNow > backupDaysMax && backupDaysTillNow <= backupWeeksMax * 7 && backupDate.getDay() == 0) { saveBackup = true; }
+				// DO NOT DELETE LAST backupWeeksMax MONTHS BACKUPS
+				if (backupDaysTillNow > backupWeeksMax * 7 && backupDaysTillNow <= backupMonthsMax * 30 && backupDate.getDate() < 8 && backupDate.getDay() == 0) { saveBackup = true; }
 
-			if (saveBackup) {
-				// WE KEPT THESE BACKUPS
-				console.log(`Kept: ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt} ${data.instanceSnapshots[i].name}`);
-			} else {
-				// WE DELETED THESE BACKUPS
-				var paramsDelete = {
-				"instanceSnapshotName": data.instanceSnapshots[i].name
-				};
-				this.deleteInstanceSnapshot(paramsDelete, function () {
+				if (saveBackup) {
+					// WE KEPT THESE BACKUPS
+					console.log(`Kept: ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt} ${data.instanceSnapshots[i].name}`);
+				} else {
+					// WE DELETED THESE BACKUPS
+					var paramsDelete = {
+					"instanceSnapshotName": data.instanceSnapshots[i].name
+					};
+					Lightsail.deleteInstanceSnapshot(paramsDelete, function () {
 
-				if (err) console.log(err, err.stack);
-				else console.log('Deleted: ' + data.instanceSnapshots[i].name);
-				});
+					if (err) {
+						console.log(err, err.stack);
+					} else {
+						console.log('Deleted: ' + instanceSnapshotNameLog);
+						instanceSnapshotNameLog = "";
+					}
+					});
+				}
 			}
-		}
 
 		// IF WE HAVE MORE BACKUPS WE SHOULD NAVIGATE TO THE NEXT PAGE AND USE RECURSION
 		console.log('\n\r=============== TOKEN =============== ');
@@ -124,7 +124,7 @@ exports.handler = (event, context, callback) => {
 			var params = {
 				pageToken: data.nextPageToken
 			};
-			this.getInstanceSnapshots(params, getSnapshots);
+			Lightsail.getInstanceSnapshots(params, getSnapshots);
 			}
 		}
 	}
