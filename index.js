@@ -69,16 +69,13 @@ exports.handler = (event, context, callback) => {
 	
 	function newDaySnapshot(instanceN, instanceL, backupDaysNR) {
 		var params = {
-
 			instanceName: instanceN,
 			instanceSnapshotName: instanceL + 'TAG' + backupDaysNR
-
 		};
 		Lightsail.createInstanceSnapshot(params, function (err, data) {
 			if (err) {
-				// console.log(err, err.stack); // an error occurred
-			}
-			else {
+				//console.log(err, err.stack); // an error occurred
+			} else {
 				console.log(data); // successful response
 			}
 		});
@@ -86,39 +83,42 @@ exports.handler = (event, context, callback) => {
 	
 	function getSnapshots(err, data) {
 		if (err) {
-			console.log(err, err.stack); // an error occurred
+			//console.log(err, err.stack); // an error occurred
 		}	else {
 			var instanceSnapshotNameLog = "";
-			for (var i = 0; i < data.instanceSnapshots.length; i++) { // BROWSE THROUGH SNAPSHOTS
+			// BROWSE THROUGH SNAPSHOTS
+			for (var i = 0; i < data.instanceSnapshots.length; i++) {
 				instanceSnapshotNameLog = data.instanceSnapshots[i].name;
-				backupDate = new Date(data.instanceSnapshots[i].createdAt);
-				backupDaysTillNow = Math.floor((now - backupDate) / oneDay);
-				saveBackup = false;
+				if (instanceSnapshotNameLog.indexOf(instances[0].label) >= 0){
+					backupDate = new Date(data.instanceSnapshots[i].createdAt);
+					backupDaysTillNow = Math.floor((now - backupDate) / oneDay);
+					saveBackup = false;
 
-				// DO NOT DELETE LAST backupDaysMax DAYS BACKUPS
-				if (backupDaysTillNow <= backupDaysMax) { saveBackup = true; }
-				// DO NOT DELETE LAST backupWeeksMax WEEKS BACKUPS
-				if (backupDaysTillNow > backupDaysMax && backupDaysTillNow <= backupWeeksMax * 7 && backupDate.getDay() == 0) { saveBackup = true; }
-				// DO NOT DELETE LAST backupWeeksMax MONTHS BACKUPS
-				if (backupDaysTillNow > backupWeeksMax * 7 && backupDaysTillNow <= backupMonthsMax * 30 && backupDate.getDate() < 8 && backupDate.getDay() == 0) { saveBackup = true; }
+					// DO NOT DELETE LAST backupDaysMax DAYS BACKUPS
+					if (backupDaysTillNow <= backupDaysMax) { saveBackup = true; }
+					// DO NOT DELETE LAST backupWeeksMax WEEKS BACKUPS
+					if (backupDaysTillNow > backupDaysMax && backupDaysTillNow <= backupWeeksMax * 7 && backupDate.getDay() == 0) { saveBackup = true; }
+					// DO NOT DELETE LAST backupWeeksMax MONTHS BACKUPS
+					if (backupDaysTillNow > backupWeeksMax * 7 && backupDaysTillNow <= backupMonthsMax * 30 && backupDate.getDate() < 8 && backupDate.getDay() == 0) { saveBackup = true; }
 
-				if (saveBackup) {
-					// WE KEPT THESE BACKUPS
-					console.log(`Kept: ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt} ${data.instanceSnapshots[i].name}`);
-				} else {
-					// WE DELETED THESE BACKUPS
-					var paramsDelete = {
-					"instanceSnapshotName": data.instanceSnapshots[i].name
-					};
-					Lightsail.deleteInstanceSnapshot(paramsDelete, function () {
-
-					if (err) {
-						console.log(err, err.stack);
+					if (saveBackup) {
+						// WE KEPT THESE BACKUPS
+						console.log(`Kept: ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt} ${data.instanceSnapshots[i].name}`);
 					} else {
-						console.log('Deleted: ' + instanceSnapshotNameLog);
-						instanceSnapshotNameLog = "";
+						// WE DELETED THESE BACKUPS
+						var paramsDelete = {
+						"instanceSnapshotName": data.instanceSnapshots[i].name
+						};
+						Lightsail.deleteInstanceSnapshot(paramsDelete, function () {
+
+						if (err) {
+							//console.log(err, err.stack); // an error occurred
+						} else {
+							console.log('Deleted: ' + instanceSnapshotNameLog);
+							instanceSnapshotNameLog = "";
+						}
+						});
 					}
-					});
 				}
 			}
 
@@ -160,20 +160,16 @@ exports.handler = (event, context, callback) => {
 		};
 
 		Lightsail.getInstanceSnapshot(params, function (err, data) {
-			if (err) { //console.log(err, err.stack); // an error occurred
-				console.log('No snapshot, we create a new one');
+			if (err) {
+				//console.log(err, err.stack); // an error occurred
 				newDaySnapshot(instanceName, instanceLabel, "KW" + kw + "TAG" + backupDaysNR);
-
-			}
-			else {
-				console.log(data);	// successful response
-
+			} else {
+				console.log(data); // successful response
 				// delete old backup
 				Lightsail.deleteInstance(params, function (err, data) {
 				if (err) {
 					// console.log(err, err.stack); // an error occurred
-				}
-				else {
+				} else {
 					console.log(data); // successful response
 					newDaySnapshot(instanceName, instanceLabel, backupDaysNR);
 				}
