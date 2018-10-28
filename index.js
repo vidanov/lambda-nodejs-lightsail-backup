@@ -2,6 +2,7 @@
 
 exports.handler = (event, context, callback) => {
 
+
 // PLEASE DEFINE YOUR REGIONS & INSTANCES!	
 
 	
@@ -21,7 +22,9 @@ exports.handler = (event, context, callback) => {
 	//	{name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3", label: "Bunny2"},
 	//	];
 
+	
 // YOU CAN ADJUST THE FREQUENCY AND NUMBER OF BACKUPS TO STORE HERE.
+
 	
 	// ================================				
 	// Define snapshot settings
@@ -30,8 +33,10 @@ exports.handler = (event, context, callback) => {
 	const backupDaysMax = 7; // keep at least 7 daily backups 
 	const backupWeeksMax = 4; // keep at least 4 weekly backups
 	const backupMonthsMax = 3; // keep at least 3 monthly backups
+
 	
 // YOU DO NOT CHANGE ANYTHING HERE!
+
 	
 	// ================================				
 	// Dates calculations for the name
