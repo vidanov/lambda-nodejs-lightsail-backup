@@ -14,6 +14,8 @@ exports.handler = (event, context, callback) => {
 		{name: "Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"}
 		];
 
+	// WARNING: FOR NOW ONLY 1 INSTANCE WORKS
+	
 	// Your instance name and region can be found here (see image): http://take.ms/3KOAo
 	// Define a unique label per instance for unique snapshot names
 	// Another example for multiple regions (do not forget to put the commas!):
