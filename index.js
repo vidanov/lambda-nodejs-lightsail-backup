@@ -109,7 +109,7 @@ exports.handler = (event, context, callback) => {
 				var paramsDelete = {
 				"instanceSnapshotName": data.instanceSnapshots[i].name
 				};
-				this.deleteInstanceSnapshot(paramsDelete, function () {
+				this.DeleteInstanceSnapshot(paramsDelete, function () {
 
 				if (err) console.log(err, err.stack);
 				else console.log('Deleted: ' + data.instanceSnapshots[i].name);
