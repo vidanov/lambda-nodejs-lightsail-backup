@@ -20,7 +20,7 @@ We will use the AWS Lambda.
 
 We need to set up some permissions, so that our Lambda function has enough rights to do the job. 
 
-***ATTENTION!*** The script will remove all snapshots you created if they are out of range. To keep them you need modify the script. I plan to change it to keep all manually created backups. But now be careful!
+***ATTENTION!*** The script will remove all snapshots, with the same label, you created if they are out of range. To keep them you need to modify the script. I plan to change it to keep all manually created backups. But now be careful!
 
 ## Step 1. Create the IAM policy
  1. Sign up to the AWS console here https://aws.amazon.com
@@ -83,22 +83,13 @@ We need to set up some permissions, so that our Lambda function has enough right
 
 Set the name and the region accordingly to your settings in the line
  <pre><code>
-       var instances = [
-        		{name: "your-instance-name-here", region: "your-region-here"}
+       const instances = [
+        		{name: "your-instance-name-here", region: "your-region-here", label: "your-made-up-label-here"}
      		];
 </code></pre>
 
  Your instance name and region can be found here (see image): 
 http://take.ms/3KOAo
-
-Thanks to Joram Teusink (https://github.com/teusink) you can make the backups for several instances in one script. 
-Here is an example how to make backups for different instances in one script (do not forget to put the commas!):
-<pre><code>
-	 var instances = [
-		{name: "LAMP_Stack-2GB-Frankfurt-1", region: "eu-central-1"},
-	 {name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3"},
-	];
-</code></pre> 
  
  8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
  9. Push SAVE button at the top right.
@@ -111,7 +102,6 @@ Here is an example how to make backups for different instances in one script (do
  4. The new snapshot will be created for your instance. 
   
 The script will remove old backups, that are not in the range of dates you set. The Lightsail backups are incremental and they are very economical to use for you.
-
 
 JFYI: Weekly and monthly backups will be saved on Sundays. You need at least 7 daily backups for weekly and monthly backups work correctly.
 
