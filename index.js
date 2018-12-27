@@ -7,22 +7,17 @@ exports.handler = (event, context, callback) => {
 
 	
 	// ================================				
-	// Define region & instances
+	// Define region & instance
 	// ================================
 	
 	const instances = [
 		{name: "Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"}
 		];
-
-	// WARNING: FOR NOW ONLY 1 INSTANCE WORKS
 	
 	// Your instance name and region can be found here (see image): http://take.ms/3KOAo
-	// Define a unique label per instance for unique snapshot names
-	// Another example for multiple regions (do not forget to put the commas!):
-	// var instances = [
-	//	{name: "LAMP_Stack-2GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"},
-	//	{name: "Amazon_Linux-512MB-Paris-1", region: "eu-west-3", label: "Bunny2"},
-	//	];
+	
+	// NOTE:	Define a unique label for proper snapshot names
+	// WARNING:	Only one instance per snapshot script is possible
 
 	
 // YOU CAN ADJUST THE FREQUENCY AND NUMBER OF BACKUPS TO STORE HERE.
@@ -121,7 +116,7 @@ exports.handler = (event, context, callback) => {
 						}
 						});
 					}
-				}
+				} else { saveBackup = true; }
 			}
 
 		// IF WE HAVE MORE BACKUPS WE SHOULD NAVIGATE TO THE NEXT PAGE AND USE RECURSION
@@ -135,59 +130,56 @@ exports.handler = (event, context, callback) => {
 			}
 		}
 	}
+
+	// ================================				
+	// Create an AWS Lightsail client
+	// ================================
+
+	var instanceName = instances[0].name;
+	var instanceRegion = instances[0].region;
+	var instanceLabel = instances[0].label;
+	var AWS = require('aws-sdk');
+	AWS.config.update({ region: instanceRegion });
+	var Lightsail = new AWS.Lightsail();
 	
-	for (var i = 0; i < instances.length; i++) {
+	console.log("instanceName: " + instanceName);
+	console.log("instanceRegion: " + instanceRegion);
+	console.log("instanceLabel: " + instanceLabel);
+	
+	// ================================				
+	// Create a new snapshot
+	// ================================
 
-		// ================================				
-		// Create an AWS Lightsail client
-		// ================================
+	var params = {
+		"instanceSnapshotName": instanceLabel + "KW" + kw + "TAG" + backupDaysNR
+	};
 
-		var instanceName = instances[i].name;
-		var instanceRegion = instances[i].region;
-		var instanceLabel = instances[i].label;
-		var AWS = require('aws-sdk');
-		AWS.config.update({ region: instanceRegion });
-		var Lightsail = new AWS.Lightsail();
-		
-		console.log("instanceName: " + instanceName);
-		console.log("instanceRegion: " + instanceRegion);
-		console.log("instanceLabel: " + instanceLabel);
-		
-		// ================================				
-		// Create a new snapshot
-		// ================================
-
-		var params = {
-			"instanceSnapshotName": instanceLabel + "KW" + kw + "TAG" + backupDaysNR
-		};
-
-		Lightsail.getInstanceSnapshot(params, function (err, data) {
+	Lightsail.getInstanceSnapshot(params, function (err, data) {
+		if (err) {
+			//console.log(err, err.stack); // an error occurred
+			newDaySnapshot(instanceName, instanceLabel, "KW" + kw + "TAG" + backupDaysNR);
+		} else {
+			console.log(data); // successful response
+			// delete old backup
+			Lightsail.deleteInstance(params, function (err, data) {
 			if (err) {
-				//console.log(err, err.stack); // an error occurred
-				newDaySnapshot(instanceName, instanceLabel, "KW" + kw + "TAG" + backupDaysNR);
+				// console.log(err, err.stack); // an error occurred
 			} else {
 				console.log(data); // successful response
-				// delete old backup
-				Lightsail.deleteInstance(params, function (err, data) {
-				if (err) {
-					// console.log(err, err.stack); // an error occurred
-				} else {
-					console.log(data); // successful response
-					newDaySnapshot(instanceName, instanceLabel, backupDaysNR);
-				}
-				});
+				newDaySnapshot(instanceName, instanceLabel, backupDaysNR);
 			}
-		});
+			});
+		}
+	});
 
-		// ================================				
-		//	Deleting old snapshots
-		// ================================
+	// ================================				
+	//	Deleting old snapshots
+	// ================================
 
-		var params = {};
-		var backupDaysTillNow;
-		var saveBackup;
-		var backupDate;
+	var params = {};
+	var backupDaysTillNow;
+	var saveBackup;
+	var backupDate;
 
-		Lightsail.getInstanceSnapshots(params, getSnapshots);
-	}
+	Lightsail.getInstanceSnapshots(params, getSnapshots);
 };
