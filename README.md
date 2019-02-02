@@ -84,7 +84,7 @@ We need to set up some permissions, so that our Lambda function has enough right
 Set the name and the region accordingly to your settings in the line
  <pre><code>
       const instanceName = "LAMP_Stack-2GB-Frankfurt-1"U
-
+      AWS.config.update({ region: 'eu-central-1' });
 </code></pre>
 
  Your instance name and region can be found here (see image): 
