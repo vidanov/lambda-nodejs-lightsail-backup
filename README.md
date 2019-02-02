@@ -83,8 +83,7 @@ We need to set up some permissions, so that our Lambda function has enough right
 
 Set the name and the region accordingly to your settings in the line
  <pre><code>
-       {name: "Plesk_Hosting_Stack_on_Ubuntu-1GB-Frankfurt-1", region: "eu-central-1", label: "Bunny1"}
-		];
+      const instanceName = "LAMP_Stack-2GB-Frankfurt-1"U
 
 </code></pre>
 
