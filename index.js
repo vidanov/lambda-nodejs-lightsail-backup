@@ -11,6 +11,12 @@ exports.handler = (event, context, callback) => {
   const backupMonthsMax = 3; // keep at least 3  monthly  backups
 
   // ================================        
+  // Unique short tag for snapshots
+  // ================================
+
+  const labelTag = "ABC" // If "ABC" label would be ABCKW8TAG6 for example 
+
+  // ================================        
   // Create an AWS Lightsail client
   // ================================
 
@@ -76,7 +82,7 @@ exports.handler = (event, context, callback) => {
   function newDaySnapshot(instanceName, backupDaysNR) {
     var params = {
       instanceName: instanceName,
-      instanceSnapshotName: 'TAG' + backupDaysNR
+      instanceSnapshotName: labelTag + backupDaysNR
     };
     Lightsail.createInstanceSnapshot(params, function (err, data) {
       if (err) {
