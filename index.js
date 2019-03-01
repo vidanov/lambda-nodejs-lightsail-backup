@@ -14,7 +14,9 @@ exports.handler = (event, context, callback) => {
   // Unique short tag for snapshots
   // ================================
 
-  const labelTag = "ABC" // If "ABC" label would be ABCKW8TAG6 for example 
+  const labelTag = "ABC" // Use labelTag to avoid the conflict with overriding of the backups from different instances you have.
+  // Set it differently in your Lambdas for different instances. For "ABC" label it would be ABCKW8TAG6 the name of the backups 
+
 
   // ================================        
   // Create an AWS Lightsail client
