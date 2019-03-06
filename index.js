@@ -113,30 +113,35 @@ exports.handler = (event, context, callback) => {
     }
     else {
       for (var i = 0; i < data.instanceSnapshots.length; i++) { // BROWSE THROUGH SNAPSHOTS
+        var backupFromInstance = data.instanceSnapshots[i].fromInstanceName;
         backupDate = new Date(data.instanceSnapshots[i].createdAt);
         backupDaysTillNow = Math.floor((now - backupDate) / oneDay);
         saveBackup = false;
+        if (backupFromInstance == instanceName) {
+                // DO NOT DELETE LAST backupDaysMax DAYS BACKUPS
+                if (backupDaysTillNow <= backupDaysMax) { saveBackup = true; }
+                // DO NOT DELETE LAST backupWeeksMax WEEKS BACKUPS
+                if (backupDaysTillNow > backupDaysMax && backupDaysTillNow <= backupWeeksMax * 7 && backupDate.getDay() == 0) { saveBackup = true; }
+                // DO NOT DELETE LAST backupWeeksMax MONTHS BACKUPS
+                if (backupDaysTillNow > backupWeeksMax * 7 && backupDaysTillNow <= backupMonthsMax * 30 && backupDate.getDate() < 8 && backupDate.getDay() == 0) { saveBackup = true; }
 
-        // DO NOT DELETE LAST backupDaysMax DAYS BACKUPS
-        if (backupDaysTillNow <= backupDaysMax) { saveBackup = true; }
-        // DO NOT DELETE LAST backupWeeksMax WEEKS BACKUPS
-        if (backupDaysTillNow > backupDaysMax && backupDaysTillNow <= backupWeeksMax * 7 && backupDate.getDay() == 0) { saveBackup = true; }
-        // DO NOT DELETE LAST backupWeeksMax MONTHS BACKUPS
-        if (backupDaysTillNow > backupWeeksMax * 7 && backupDaysTillNow <= backupMonthsMax * 30 && backupDate.getDate() < 8 && backupDate.getDay() == 0) { saveBackup = true; }
+                if (saveBackup) {
+                // WE KEPT THESE BACKUPS
+                console.log(`kept ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt}  ${data.instanceSnapshots[i].name}`);
+                } else {
+                // WE DELETED THESE BACKUPS
+                var paramsDelete = {
+                    "instanceSnapshotName": data.instanceSnapshots[i].name
+                }
+                Lightsail.deleteInstanceSnapshot(paramsDelete, function () {
 
-        if (saveBackup) {
-          // WE KEPT THESE BACKUPS
-          console.log(`kept ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt}  ${data.instanceSnapshots[i].name}`);
+                    if (err) console.log(err, err.stack);
+                    else console.log('Deleted ' + data.instanceSnapshots[i].name)
+                });
+                }
         } else {
-          // WE DELETED THESE BACKUPS
-          var paramsDelete = {
-            "instanceSnapshotName": data.instanceSnapshots[i].name
-          }
-          Lightsail.deleteInstanceSnapshot(paramsDelete, function () {
 
-            if (err) console.log(err, err.stack);
-            else console.log('Deleted ' + data.instanceSnapshots[i].name)
-          });
+            console.log('Will ignore this backup because it belongs to an instance other than ' + instanceName);
         }
       }
 
