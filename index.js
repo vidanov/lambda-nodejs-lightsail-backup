@@ -136,7 +136,7 @@ exports.handler = (event, context, callback) => {
                 Lightsail.deleteInstanceSnapshot(paramsDelete, function () {
 
                     if (err) console.log(err, err.stack);
-                    else console.log('Deleted ' + data.instanceSnapshots[i].name)
+                     else console.log(`Deleted ${paramsDelete.instanceSnapshotName}`);
                 });
                 }
         } else {
