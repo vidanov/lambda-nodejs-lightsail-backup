@@ -94,7 +94,10 @@ http://take.ms/3KOAo
  8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
  9. Push SAVE button at the top right.
 
-## Step 4. Test the function
+## Step 4. A first run of your function
+
+Attention! If you created some snapshots already they could be deleted after this run.
+You will use the test in the AWS Lambda console for it.
 
  1. Select 'Configure test events' in the drop down left from the TEST button on the top of the window. Use preselected values.
  2. Give the name to the event ***TestMyFunction*** and push the CREATE button
