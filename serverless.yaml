@@ -25,14 +25,26 @@ functions:
     runtime: nodejs8.10
     timeout: 60
     memorySize: 128
-
-#    Define function environment variables here
+    # Define function environment variables here
     environment:
       region: "eu-central-1"
       # Put your instance name here http://take.ms/dChbs
       instanceName: "LAMP_Stack-2GB-Frankfurt-1"
       # Use labelTag to avoid the conflict with overriding of the backups from different instances you have.
       labelTag: "ABC"
+
+  instance2:
+    handler: index.handler
+    runtime: nodejs8.10
+    timeout: 60
+    memorySize: 128
+    # Define function environment variables here
+    environment:
+      region: "eu-central-1"
+      # Put your instance name here http://take.ms/dChbs
+      instanceName: "LAMP_Stack-2GB-Frankfurt-2"
+      # Use labelTag to avoid the conflict with overriding of the backups from different instances you have.
+      labelTag: "XYZ"
 
 # you can add CloudFormation resource templates here
 
@@ -41,19 +53,31 @@ resources:
       MyScheduledRule: 
         Type: "AWS::Events::Rule"
         Properties: 
-          Description: "Lightsailsnapshots Instance1 schedule"
+          Description: "Lightsailsnapshots schedule"
           ScheduleExpression: "rate(1 day)"
           State: "ENABLED"
           Targets: 
             - 
               Arn: !GetAtt ["Instance1LambdaFunction", "Arn"]
               Id: "Instance1LambdaFunction"
+            - 
+              Arn: !GetAtt ["Instance2LambdaFunction", "Arn"]
+              Id: "Instance2LambdaFunction"
 
-      PermissionForEventsToInvokeLambda: 
+      Instance1PermissionForEventsToInvokeLambda: 
         Type: AWS::Lambda::Permission
         Properties: 
           FunctionName: 
             Ref: "Instance1LambdaFunction"
+          Action: "lambda:InvokeFunction"
+          Principal: "events.amazonaws.com"
+          SourceArn: !GetAtt ["MyScheduledRule", "Arn"]
+
+      Instance2PermissionForEventsToInvokeLambda: 
+        Type: AWS::Lambda::Permission
+        Properties: 
+          FunctionName: 
+            Ref: "Instance2LambdaFunction"
           Action: "lambda:InvokeFunction"
           Principal: "events.amazonaws.com"
           SourceArn: !GetAtt ["MyScheduledRule", "Arn"]
