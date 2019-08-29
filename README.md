@@ -87,7 +87,7 @@ We need to set up some permissions, so that our Lambda function has enough right
         const backupMonthsMax = 3; // keep at least 3  monthly  backups
 </code></pre>        
 
-Set the name, tag and the region accordingly with environment variables
+[Set the name, tag and the region (s. the picture)](https://raw.githubusercontent.com/vidanov/lambda-nodejs-lightsail-backup/master/Lambda%20Management%20Console%202019-08-29%2015-54-53(1).png) accordingly with environment variables
 | instanceName | LAMP_Stack-2GB-Frankfurt-1 |
 | labelTag | ABC |
 | region | eu-central-1 |
