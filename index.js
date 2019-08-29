@@ -5,7 +5,7 @@ exports.handler = (event, context, callback) => {
   // Define your backups
   // ================================
 
-  const instanceName = "LAMP_Stack-2GB-Frankfurt-1" // Put your instance name here http://take.ms/dChbs
+  const instanceName = process.env['instanceName'];
   const backupDaysMax = 7; // keep at least 7 daily backups 
   const backupWeeksMax = 4; // keep at least 4  weekly  backups
   const backupMonthsMax = 3; // keep at least 3  monthly  backups
@@ -14,7 +14,7 @@ exports.handler = (event, context, callback) => {
   // Unique short tag for snapshots
   // ================================
 
-  const labelTag = "ABC" // Use labelTag to avoid the conflict with overriding of the backups from different instances you have.
+  const labelTag = process.env['labelTag'];
   // Set it differently in your Lambdas for different instances. For "ABC" label it would be ABCKW8TAG6 the name of the backups 
 
 
@@ -23,7 +23,7 @@ exports.handler = (event, context, callback) => {
   // ================================
 
   var AWS = require('aws-sdk');
-  AWS.config.update({ region: 'eu-central-1' });
+  AWS.config.update({ region: process.env['region'] });
   var Lightsail = new AWS.Lightsail();
 
   // ================================        

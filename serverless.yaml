@@ -1,0 +1,58 @@
+service: LightSailBackups
+
+# https://serverless.com/framework/docs/providers/aws/guide/functions/
+
+provider:
+  name: aws
+  stage: prod
+  region: eu-central-1
+  versionFunctions: false
+
+# you can add statements to the Lambda function's IAM Role here
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "lightsail:CreateInstanceSnapshot"
+        - "lightsail:DeleteInstanceSnapshot"
+        - "lightsail:GetInstanceSnapshot"
+        - "lightsail:GetInstanceSnapshots"
+      Resource: "*"
+
+functions:
+  instance1:
+    handler: index.handler
+    runtime: nodejs8.10
+    timeout: 60
+    memorySize: 128
+    # Define function environment variables here
+    environment:
+      region: "eu-central-1"
+      # Put your instance name here http://take.ms/dChbs
+      instanceName: "LAMP_Stack-2GB-Frankfurt-1"
+      # Use labelTag to avoid the conflict with overriding of the backups from different instances you have.
+      labelTag: "ABC"
+
+# you can add CloudFormation resource templates here
+
+resources:
+  Resources:
+      MyScheduledRule: 
+        Type: "AWS::Events::Rule"
+        Properties: 
+          Description: "Lightsailsnapshots schedule"
+          ScheduleExpression: "rate(1 day)"
+          State: "ENABLED"
+          Targets: 
+            - 
+              Arn: !GetAtt ["Instance1LambdaFunction", "Arn"]
+              Id: "Instance1LambdaFunction"
+
+      Instance1PermissionForEventsToInvokeLambda: 
+        Type: AWS::Lambda::Permission
+        Properties: 
+          FunctionName: 
+            Ref: "Instance1LambdaFunction"
+          Action: "lambda:InvokeFunction"
+          Principal: "events.amazonaws.com"
+          SourceArn: !GetAtt ["MyScheduledRule", "Arn"]
