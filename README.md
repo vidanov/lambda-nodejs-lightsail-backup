@@ -18,11 +18,16 @@ We will use the AWS Lambda.
 
 # Setup
 
-Two options:
+There are two options now how to install it:
 
-a) [Using serverles](serverless.md)
+a) Manual installation (s. below).
+It takes more time but you do not need to install anything. You can perform all steps in the AWS console using your web browser.
 
-b) Manually:
+b) [Using serverles](serverless.md) created by Angel Abad Cerdeira.
+It is a faster and better solution. It is easier to deploy for multiple Lightsail instances.
+
+
+# The manual installation
 
 We need to set up some permissions, so that our Lambda function has enough rights to do the job. 
 
@@ -121,7 +126,7 @@ Licensed under the Apache License, Version 2.0 (the "License"). You may not use 
 http://aws.amazon.com/apache2.0/
 
 ## LICENSE
-Copyright 2018 Alexey Vidanov
+Copyright 2019 Alexey Vidanov, Angel Abad Cerdeira
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
