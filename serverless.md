@@ -29,7 +29,7 @@ You need credentials to manipulate your AWS account from command line, if you do
 
 Grab `Access key ID` and `Secret Access key` and store them in a safe place. 
 
-## Step 2: Edit `serverless.yaml` 
+## Step 2: Edit [serverless.yaml](https://github.com/vidanov/lambda-nodejs-lightsail-backup/blob/master/serverless.yaml)
 
 - Change line 32 `instanceName` with the name of your instance in LightSail.
 - Change line 34 `labelTag` so the snapshots have unique names in case you create more Lambda functions for other instances.
