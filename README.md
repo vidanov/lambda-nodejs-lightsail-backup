@@ -18,6 +18,12 @@ We will use the AWS Lambda.
 
 # Setup
 
+Two options:
+
+a) [Using serverles](serverless.md)
+
+b) Manually:
+
 We need to set up some permissions, so that our Lambda function has enough rights to do the job. 
 
 ***ATTENTION!*** The script will remove all snapshots you created if they are out of range. To keep them you need modify the script. I plan to change it to keep all manually created backups. But now be careful!
@@ -81,11 +87,10 @@ We need to set up some permissions, so that our Lambda function has enough right
         const backupMonthsMax = 3; // keep at least 3  monthly  backups
 </code></pre>        
 
-Set the name and the region accordingly to your settings in the line
- <pre><code>
-      const instanceName = "LAMP_Stack-2GB-Frankfurt-1"
-      AWS.config.update({ region: 'eu-central-1' });
-</code></pre>
+Set the name, tag and the region accordingly with environment variables
+| instanceName | LAMP_Stack-2GB-Frankfurt-1 |
+| labelTag | ABC |
+| region | eu-central-1 |
 
  Your instance name and region can be found here (see image): 
 http://take.ms/3KOAo
