@@ -23,7 +23,7 @@ There are two options now how to install it:
 a) Manual installation (s. below).
 It takes more time but you do not need to install anything. You can perform all steps in the AWS console using your web browser.
 
-b) [Using serverles](serverless.md) created by Angel Abad Cerdeira.
+b) [Using serverless](serverless.md) created by Angel Abad Cerdeira.
 It is a faster and better solution. It is easier to deploy for multiple Lightsail instances.
 
 
