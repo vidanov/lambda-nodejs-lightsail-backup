@@ -18,7 +18,7 @@ We will use the AWS Lambda.
 
 # Setup
 
-There are two options now how to install it:
+There are three options now how to install it:
 
 a) With an AWS serverless repository (instructions are coming soon...)
 [Follow this link](https://console.aws.amazon.com/lambda/home?region=us-east-1#/create/app?applicationId=arn:aws:serverlessrepo:us-east-1:278937263884:applications/lightsail-backups)
