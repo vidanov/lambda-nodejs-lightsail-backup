@@ -22,7 +22,7 @@ There are three options now how to install it:
 
 a) With an AWS serverless repository (instructions are coming soon...)
 [Follow this link](https://console.aws.amazon.com/lambda/home?region=us-east-1#/create/app?applicationId=arn:aws:serverlessrepo:us-east-1:278937263884:applications/lightsail-backups)
-It is the easiest way and the fastest way to create the automatic backups for AWS Lightsail.
+It is the easiest and the fastest way to create the automatic backups for AWS Lightsail.
 You do not need to install anything on your computer. You can perform all steps in the AWS console using your web browser.
 The best solution if you want to install a backup for one instance.
 
@@ -34,7 +34,7 @@ But it is much longer than (a).
 
 c) [Using serverless](serverless.md) created by Angel Abad Cerdeira.
 
-It is a faster and better solution than the manual installation (b). It is easier to deploy for multiple Lightsail instances than with (a). But you need to make some preparation on your machine.
+It is a faster and better solution than the manual installation (b). It is faster to deploy for multiple Lightsail instances than with (a). But you need to make some preparation on your machine.
 
 
 # The manual installation
