@@ -32,7 +32,7 @@ With the introduction of (a) it is outdated.
 You do not need to install anything on your computer. You can perform all steps in the AWS console using your web browser.
 But it is much longer than (a).
 
-c) [Using serverless](serverless/serverless.md) created by Angel Abad Cerdeira.
+c) [Using serverless](serverless/README.md) created by Angel Abad Cerdeira.
 
 It is a faster and better solution than the manual installation (b). It is faster to deploy for multiple Lightsail instances than with (a). But you need to make some preparation on your machine.
 
