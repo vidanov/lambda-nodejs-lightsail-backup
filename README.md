@@ -39,9 +39,9 @@ Follow the instructions here for the setup. It is easy! We will use an AWS Serve
 
 ![](imgs/image-20190907211944566.png)
 
-3) Check the box "I acknowledge that this app creates custom IAM roles and resource policies."
+4) Check the box "I acknowledge that this app creates custom IAM roles and resource policies."
 
-4) Push the "Deploy button".
+5) Push the "Deploy button".
 
 **That's all! Your backups will be created every day for you. You will see them in the Snapshots section of your instance in the Lightsail console.** [You can start the creation of your first backup manually](manual-start.MD).
 
