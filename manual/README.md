@@ -19,7 +19,7 @@ We will use the AWS Lambda.
 
 # The manual installation (DEPRECATED)
 
-This manual is outdated. Please use the AWS serverless repository instructions.
+This manual is outdated. [Please use the AWS serverless repository instructions.](https://github.com/vidanov/lambda-nodejs-lightsail-backup/)
 
 We need to set up some permissions, so that our Lambda function has enough rights to do the job. 
 
@@ -52,8 +52,8 @@ We need to set up some permissions, so that our Lambda function has enough right
 </code></pre>  
 
  5. Push the REVIEW POLICY button. Give it the name ***lightsail_snapshots*** to it, put ***lightsail backups*** in the description and push the CREATE POLICY button. 
- 
- 
+
+
  ## Step 2. Create the IAM role
 
 1. Click on the link ROLES in the menu at the left in the console
@@ -74,9 +74,9 @@ We need to set up some permissions, so that our Lambda function has enough right
  7. Click on the block "LightSailBackup" again and paste in the 'Function Code' field the code from here  (the index.js contents in this repository)
  https://raw.githubusercontent.com/vidanov/lambda-nodejs-lightsail-backup/master/index.js
  Change the name of the ***instanceName*** in the function and set up the frequency of the backups.
- 
+
   <pre><code>
-        
+
         const backupDaysMax = 7; // keep at least 7 daily backups 
         
         const backupWeeksMax = 4; // keep at least 4  weekly  backups
@@ -92,7 +92,7 @@ We need to set up some permissions, so that our Lambda function has enough right
  Your instance name and region can be found here (see image): 
 http://take.ms/3KOAo
 
- 
+
  8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
  9. Push SAVE button at the top right.
 
@@ -105,7 +105,7 @@ You will use the test in the AWS Lambda console for it.
  2. Give the name to the event ***TestMyFunction*** and push the CREATE button
  3. Push the TEST button 
  4. The new snapshot will be created for your instance. 
-  
+
 The script will remove old backups, that are not in the range of dates you set. The Lightsail backups are incremental and they are very economical to use for you.
 
 
