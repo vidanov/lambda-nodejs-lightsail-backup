@@ -14,7 +14,7 @@ The AWS Lightsail is an excellent hosting service to start with it. The Lightsai
 
 Follow the instructions here for the setup. It is easy! We will use an AWS Serverless repository to install a Lambda function that will be scheduled to create Lightsail snapshots for you.
 
-**Note:** you can use as an alternative you can use this  [Serverless script](serverless/README.md) and instructions for it created by Angel Abad Cerdeira. It is more technical, you will need to install [Serverless](https://serverless.com), but it is faster to deploy for multiple Lightsail instances or automate it even more.
+**Note:** you can use as an alternative this  [Serverless script](serverless/README.md) and instructions for it created by Angel Abad Cerdeira. It is more technical, you will need to install [Serverless](https://serverless.com), but it is faster to deploy for multiple Lightsail instances or automate it even more.
 
 # Setup instructions
 
