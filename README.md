@@ -43,7 +43,7 @@ Follow the instructions here for the setup. It is easy! We will use an AWS Serve
 
 5) Push the "Deploy button".
 
-**That's all! Your backups will be created every day for you. You will see them in the Snapshots section of your instance in the Lightsail console.** [You can start the creation of your first backup manually](manual-start.MD).
+**That's all! Your backups will be created every day for you. You will see them in the Snapshots section of your instance in the Lightsail console.** [You can start the creation of your first backup manually](manual-start.md).
 
 **Notice about multiple instances backups:** If you have multiple instances, repeat the steps above for every instance, be sure to use a unique **Application name** and **labelTag** for every instance!
 
