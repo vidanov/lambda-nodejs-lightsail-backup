@@ -2,11 +2,12 @@
 
 **This script for the AWS Lambda NodeJS is to automate the backup process for your AWS Lightsail instances easily.** 
 
-
+![image-20190907215709173](imgs/image-20190907215709173.png)
 
 The AWS Lightsail is an excellent hosting service to start with it. The Lightsail snapshot backups are a no-brainer to use. They are very powerful and incremental. You pay only for the differences in your snapshot files. It means you can create a lot of snapshot backups without spending a fortune on them. It keeps your work safe. But sorrowfully you cannot set up automatic backups from the console of the service at the moment. Now you can solve this problem easily with the help of this manual.
 
-**Benefits**
+**Benefits of the Automatic snapshots for AWS Lightsail solution**
+
 - Free of charge and lightning fast to install!
 - Once set up, no need to worry 
 - Daily, weekly and monthly backups
