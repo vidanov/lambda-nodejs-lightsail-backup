@@ -1,134 +1,56 @@
-# Automatic backups for AWS Lightsail
+# Automatic snapshots for AWS Lightsail
 
-[![Video Instructions Automatic backups for AWS Lightsail](http://img.youtube.com/vi/vUy-eX20nsA/0.jpg)](http://www.youtube.com/watch?v=vUy-eX20nsA)
+**This script for the AWS Lambda NodeJS is to automate the backup process for your AWS Lightsail instances easily.** 
 
-- [Video Instructions Automatic backups for AWS Lightsail](http://www.youtube.com/watch?v=vUy-eX20nsA)
 
-This script for the AWS Lambda NodeJS is to automate the backup process for your AWS Lightsail instances easily. 
 
-The AWS Lightsail is an excellent hosting service to start with it. The Lightsail backups are a no-brainer to use. They are very powerful and incremental. You pay only for the differences in your files. It means you can create a lot of backups without spending a fortune on them. It keeps your work safe. But sorrowfully you cannot set up automatic backups from the console of the service. Now you can solve this problem easily with the help of this manual.
+The AWS Lightsail is an excellent hosting service to start with it. The Lightsail snapshot backups are a no-brainer to use. They are very powerful and incremental. You pay only for the differences in your snapshot files. It means you can create a lot of snapshot backups without spending a fortune on them. It keeps your work safe. But sorrowfully you cannot set up automatic backups from the console of the service at the moment. Now you can solve this problem easily with the help of this manual.
 
 **Benefits**
-- Free of charge!
+- Free of charge and lightning fast to install!
 - Once set up, no need to worry 
 - Daily, weekly and monthly backups
 
-Follow the instructions here for the setup. It is easy!
-We will use the AWS Lambda.
+Follow the instructions here for the setup. It is easy! We will use an AWS Serverless repository to install a Lambda function that will be scheduled to create Lightsail snapshots for you.
 
-# Setup
+**Note:** you can use as an alternative you can use this  [Serverless script](serverless/README.md) and instructions for it created by Angel Abad Cerdeira. It is more technical, you will need to install [Serverless](https://serverless.com), but it is faster to deploy for multiple Lightsail instances or automate it even more.
 
-There are three options now how to install it:
+# Setup instructions
 
-a) With an AWS serverless repository (instructions are coming soon...)
-[Follow this link](https://console.aws.amazon.com/lambda/home?region=us-east-1#/create/app?applicationId=arn:aws:serverlessrepo:us-east-1:278937263884:applications/lightsail-backups)
-It is the easiest and the fastest way to create the automatic backups for AWS Lightsail.
-You do not need to install anything on your computer. You can perform all steps in the AWS console using your web browser.
-The best solution if you want to install a backup for one instance.
+**Attention!** The script may remove your manual snapshots if you created ones. It will be fixed soon. Keep tuned.
 
-b) Manual installation (s. below).
+-----
 
-With the introduction of (a) it is outdated. 
-You do not need to install anything on your computer. You can perform all steps in the AWS console using your web browser.
-But it is much longer than (a).
+**This setup is lightning fast and easy. It needs about 2 minutes to get it started.** 
 
-c) [Using serverless](serverless/README.md) created by Angel Abad Cerdeira.
+1) You should login into your AWS account. https://aws.amazon.com
 
-It is a faster and better solution than the manual installation (b). It is faster to deploy for multiple Lightsail instances than with (a). But you need to make some preparation on your machine.
+2) Open the AWS serverless repository [lightsail-backups](https://console.aws.amazon.com/lambda/home?region=us-east-1#/create/app?applicationId=arn:aws:serverlessrepo:us-east-1:278937263884:applications/lightsail-backups). 
 
+![image-20190907211633592](imgs/image-20190907211633592.png)
 
-# The manual installation
+3) Fill in the values in the Application Settings form.
 
-We need to set up some permissions, so that our Lambda function has enough rights to do the job. 
+- **Application name** is the name of your backup application. 
+- **Ndays, Nweeks, Nmonth** define rotation period or how long your snapshots will be keeped.
+- Put the name of your instance to backup in the field **instanceName** and the region in the field **Region** Your instance name and region can be found here (see image): 
+  http://take.ms/3KOAo
 
-***ATTENTION!*** The script will remove all snapshots you created if they are out of range. To keep them you need modify the script. I plan to change it to keep all manually created backups. But now be careful!
+![](imgs/image-20190907211944566.png)
 
-## Step 1. Create the IAM policy
- 1. Sign up to the AWS console here https://aws.amazon.com
- 2. Put IAM in the search field or go to https://console.aws.amazon.com/iam/
- 3. Open the link POLICIES from the menu at the left and push the CREATE POLICY button.
- 4. Go to the JSON tab. And put this text there
-<pre><code>
-    {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Sid": "Stmt1510233220000",
-                    "Effect": "Allow",
-                    "Action": [
-                        "lightsail:CreateInstanceSnapshot",
-                        "lightsail:DeleteInstanceSnapshot",
-                        "lightsail:GetInstanceSnapshot",
-                        "lightsail:GetInstanceSnapshots"
-                    ],
-                    "Resource": [
-                        "*"
-                    ]
-                }
-            ]
-    }
-</code></pre>  
+3) Check the box "I acknowledge that this app creates custom IAM roles and resource policies."
 
- 5. Push the REVIEW POLICY button. Give it the name ***lightsail_snapshots*** to it, put ***lightsail backups*** in the description and push the CREATE POLICY button. 
- 
- 
- ## Step 2. Create the IAM role
+4) Push the "Deploy button".
 
-1. Click on the link ROLES in the menu at the left in the console
-2. Push the button CREATE ROLE
-3. Use preselected AWS Service tab and click on the link LAMBDA in the services list.
-4. Push the button NEXT: PERMISSIONS
-5. In the search field type **AWSLambdaBasicExecutionRole** and check the box for it, then type **lightsail_snapshots** and check the box for it too. Push the button NEXT: REVIEW
-6. Give the role name ***LightsailsnapshotsRole*** push the button CREATE ROLE
+**That's all! Your backups will be created every day for you. You will see them in the Snapshots section of your instance in the Lightsail console.** [You can start the creation of your first backup manually](manual-start.MD).
 
-## Step 3. Create Lambda function
+**Notice about multiple instances backups:** If you have multiple instances, repeat the steps above for every instance, be sure to use a unique **Application name** and **labelTag** for every instance!
 
- 1. Go to the https://aws.amazon.com again
- 2. Put the Lambda in the search field
- 3. Push the button CREATE FUNCTION
- 4. Use the preselected AUTHOR FROM SCRATCH tab, give the name for the function ***LightSailBackup***
- 5. Use the "Node.js 8.10" for Runtime and "Choose an existing role" for the Role. Choose the ***LightsailsnapshotsRole*** role you created in the step 2. Push the button CREATE FUNCTION
- 6. In the panel Add triggers at the left click the CLOUD WATCH EVENTS link. In the 'Rule' section select 'Create a new rule'. Give the name ***daily*** in the 'Schedule expression' section put ***rate(1 day)*** and push the ADD button.
- 7. Click on the block "LightSailBackup" again and paste in the 'Function Code' field the code from here  (the index.js contents in this repository)
- https://raw.githubusercontent.com/vidanov/lambda-nodejs-lightsail-backup/master/index.js
- Change the name of the ***instanceName*** in the function and set up the frequency of the backups.
- 
-  <pre><code>
-        
-        const backupDaysMax = 7; // keep at least 7 daily backups 
-        
-        const backupWeeksMax = 4; // keep at least 4  weekly  backups
-        
-        const backupMonthsMax = 3; // keep at least 3  monthly  backups
-</code></pre>        
+##YOUR KIND WORDS SUPPORT OUR WORK!
 
-[Set the name, tag and the region (s. the picture)](https://raw.githubusercontent.com/vidanov/lambda-nodejs-lightsail-backup/master/imgs/variables.png) accordingly with environment variables
-| instanceName | LAMP_Stack-2GB-Frankfurt-1 |
-| labelTag | ABC |
-| region | eu-central-1 |
-
- Your instance name and region can be found here (see image): 
-http://take.ms/3KOAo
-
- 
- 8. Set timeout to 1 minute in Basic Settings for your Lambda function http://take.ms/yRMxp
- 9. Push SAVE button at the top right.
-
-## Step 4. A first run of your function
-
-Attention! If you created some snapshots already they could be deleted after this run.
-You will use the test in the AWS Lambda console for it.
-
- 1. Select 'Configure test events' in the drop down left from the TEST button on the top of the window. Use preselected values.
- 2. Give the name to the event ***TestMyFunction*** and push the CREATE button
- 3. Push the TEST button 
- 4. The new snapshot will be created for your instance. 
-  
-The script will remove old backups, that are not in the range of dates you set. The Lightsail backups are incremental and they are very economical to use for you.
-
-
-JFYI: Weekly and monthly backups will be saved on Sundays. You need at least 7 daily backups for weekly and monthly backups work correctly.
-
+- Make suggestions and corrections.
+- Write nice words in the issues section.
+- Star this repository! 
 
 
 ## LICENSE

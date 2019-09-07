@@ -124,7 +124,8 @@ exports.handler = (event, context, callback) => {
                 if (backupDaysTillNow > backupDaysMax && backupDaysTillNow <= backupWeeksMax * 7 && backupDate.getDay() == 0) { saveBackup = true; }
                 // DO NOT DELETE LAST backupWeeksMax MONTHS BACKUPS
                 if (backupDaysTillNow > backupWeeksMax * 7 && backupDaysTillNow <= backupMonthsMax * 30 && backupDate.getDate() < 8 && backupDate.getDay() == 0) { saveBackup = true; }
-
+                // DO NOT DELETE MANUAL BACKUPS (IF THEY DO NOT CONTAIN THE labelTAG)
+              //  if (!data.instanceSnapshots[i].name.includes(labelTag)) { saveBackup = true; }
                 if (saveBackup) {
                 // WE KEPT THESE BACKUPS
                 console.log(`kept ${backupDate.getDate()} ${data.instanceSnapshots[i].createdAt}  ${data.instanceSnapshots[i].name}`);
