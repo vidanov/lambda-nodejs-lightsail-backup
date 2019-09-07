@@ -47,7 +47,7 @@ Follow the instructions here for the setup. It is easy! We will use an AWS Serve
 
 **Notice about multiple instances backups:** If you have multiple instances, repeat the steps above for every instance, be sure to use a unique **Application name** and **labelTag** for every instance!
 
-##YOUR KIND WORDS SUPPORT OUR WORK!
+## YOUR KIND WORDS SUPPORT OUR WORK!
 
 - Make suggestions and corrections.
 - Write nice words in the issues section.
