@@ -1,0 +1,124 @@
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: lightsail-backups
+    Description:  Lambda NodeJS Lightsail Backup. Automatic backups/snapshots for AWS Lightsail
+    Author: Alexey Vidanov
+    SpdxLicenseId: Apache-2.0
+    LicenseUrl: LICENSE.txt
+    ReadmeUrl: README.md
+    Labels: ['lightsail','backup','nodejs','automatic','snapshot','scheduled','daily']
+    HomePageUrl: https://github.com/vidanov/lambda-nodejs-lightsail-backup
+    SemanticVersion: 0.1.2
+    SourceCodeUrl: https://github.com/vidanov/lambda-nodejs-lightsail-backup
+  AWS::CloudFormation::Interface: 
+    ParameterGroups: 
+      - 
+        Label: 
+          default: "Backup configuration"
+        Parameters: 
+          - Ndays
+          - Nweeks
+          - Nmonths
+      - 
+        Label: 
+          default: "Your instance"
+        Parameters: 
+          - instanceName
+          - region
+          - labelTag
+    ParameterLabels: 
+      VPCID: 
+        default: "Which VPC should this be deployed to?"
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+    instanceName:
+        Description: 'Required. The name of your instance to backup.'
+        Type: 'String'
+        Default: ''
+    labelTag:
+        Description: 'Required. Set it differently in your Lambdas for different instances. For "ABC" label it would be ABCKW8TAG6 the name of the backups.'
+        Type: 'String'
+        Default: 'ABC'
+    region:
+        Description: 'Required. Region of your LightSail instance (it could be different from this backup solution).'
+        Type: 'String'
+        Default: 'us-east-1'
+    Ndays:
+        Description: 'Required. The minimum number of days to keep backups.'
+        Type: 'Number'
+        Default: '7'
+    Nweeks:
+        Description: 'Required. The minimum number of weeks to keep backups.'
+        Type: 'Number'
+        Default: '4'
+    Nmonths:
+        Description: 'Required. The minimum number of months to keep backups.'
+        Type: 'Number'
+        Default: '3'
+Resources:
+  LightSailBackup:
+    Properties:
+      Events:
+      Handler: index.handler
+      Runtime: nodejs8.10
+      CodeUri: './index.js'
+      Timeout: 120
+      Environment:
+        Variables:
+          instanceName: !Ref instanceName
+          labelTag: !Ref labelTag
+          region: !Ref region
+          days: !Ref Ndays
+          weeks: !Ref Nweeks
+          months: !Ref Nmonths
+      Role: !GetAtt  LightSailBackupFunctionRole.Arn
+    Type: AWS::Serverless::Function    
+  LightSailBackupLambdaInvoker:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: 'Creates backups for LightSail instances'
+      ScheduleExpression: rate(1 day)
+      State: ENABLED
+      Targets:
+        -
+          Arn: !GetAtt LightSailBackup.Arn
+          Id: LightSailBackupFn
+  LightSailBackupLambdaInvokerPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref LightSailBackup
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt LightSailBackupLambdaInvoker.Arn
+  LightSailBackupFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service:
+                - 'lambda.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+      Policies:
+        -
+          PolicyName: 'LightSailWithLambdaBackupPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  - "lightsail:CreateInstanceSnapshot"
+                  - "lightsail:DeleteInstanceSnapshot"
+                  - "lightsail:GetInstanceSnapshot"
+                  - "lightsail:GetInstanceSnapshots"
+                Resource: '*'
+               
+Transform: AWS::Serverless-2016-10-31
+
