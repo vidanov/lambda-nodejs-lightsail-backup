@@ -36,6 +36,7 @@ Follow the instructions here for the setup. It is easy! We will use an AWS Serve
 - **Ndays, Nweeks, Nmonth** define rotation period or how long your snapshots will be keeped.
 - Put the name of your instance to backup in the field **instanceName** and the region in the field **Region** Your instance name and region can be found here (see image): 
   http://take.ms/3KOAo
+  **Attention!** If your region name is indicated like for example **eu-central-1a** (where the "a" is for a zone) just use the name of the region like this **eu-central-1**
 
 ![](imgs/image-20190907211944566.png)
 
