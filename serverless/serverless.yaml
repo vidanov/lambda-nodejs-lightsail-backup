@@ -22,7 +22,7 @@ provider:
 functions:
   instance1:
     handler: index.handler
-    runtime: nodejs8.10
+    runtime: nodejs10.x
     timeout: 60
     memorySize: 128
     # Define function environment variables here

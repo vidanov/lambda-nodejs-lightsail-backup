@@ -8,7 +8,7 @@ Metadata:
     ReadmeUrl: README.md
     Labels: ['lightsail','backup','nodejs','automatic','snapshot','scheduled','daily']
     HomePageUrl: https://github.com/vidanov/lambda-nodejs-lightsail-backup
-    SemanticVersion: 0.1.2
+    SemanticVersion: 0.1.3
     SourceCodeUrl: https://github.com/vidanov/lambda-nodejs-lightsail-backup
   AWS::CloudFormation::Interface: 
     ParameterGroups: 
@@ -60,7 +60,7 @@ Resources:
     Properties:
       Events:
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       CodeUri: './index.js'
       Timeout: 120
       Environment:
