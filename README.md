@@ -4,7 +4,7 @@
 
 ![image-20190907215709173](imgs/image-20190907215709173.png)
 
-The AWS Lightsail is an excellent hosting service to start with it. The Lightsail snapshot backups are a no-brainer to use. They are very powerful and incremental. You pay only for the differences in your snapshot files. It means you can create a lot of snapshot backups without spending a fortune on them. It keeps your work safe. But sorrowfully you cannot set up automatic backups from the console of the service at the moment. Now you can solve this problem easily with the help of this manual.
+The AWS Lightsail is an excellent hosting service to start with it. The Lightsail snapshot backups are a no-brainer to use. They are very powerful and incremental. You pay only for the differences in your snapshot files. It means you can create a lot of snapshot backups without spending a fortune on them. It keeps your work safe. ~~But sorrowfully you cannot set up automatic backups from the console of the service at the moment.~~  Now you can set daily backups for the last 7 days in the console. If you want to use more granular settings like additional weekly, monthly backups, you can solve this problem easily with the help of this manual.
 
 **Benefits of the Automatic snapshots for AWS Lightsail solution**
 
