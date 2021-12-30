@@ -1,64 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
 Metadata:
   AWS::ServerlessRepo::Application:
     Name: lightsail-backups
-    Description:  Lambda NodeJS Lightsail Backup. Automatic backups/snapshots for AWS Lightsail
+    Description:  Lambda NodeJS Lightsail Backup. Automatic backups for AWS Lightsail
     Author: Alexey Vidanov
     SpdxLicenseId: Apache-2.0
     LicenseUrl: LICENSE.txt
     ReadmeUrl: README.md
     Labels: ['lightsail','backup','nodejs','automatic','snapshot','scheduled','daily']
     HomePageUrl: https://github.com/vidanov/lambda-nodejs-lightsail-backup
-    SemanticVersion: 0.1.4
+    SemanticVersion: 0.2.4
     SourceCodeUrl: https://github.com/vidanov/lambda-nodejs-lightsail-backup
   AWS::CloudFormation::Interface: 
     ParameterGroups: 
-      - 
-        Label: 
-          default: "Backup configuration"
+      - Label: 
+          default: Lightsail backup configuration
         Parameters: 
+          - instanceName
+          - labelTag
+          - region
           - Ndays
           - Nweeks
           - Nmonths
-      - 
-        Label: 
-          default: "Your instance"
-        Parameters: 
-          - instanceName
-          - region
-          - labelTag
-    ParameterLabels: 
-      VPCID: 
-        default: "Which VPC should this be deployed to?"
-AWSTemplateFormatVersion: '2010-09-09'
+    ParameterLabels:
+      instanceName:
+        default: "Name of the LightSail instance"
+      labelTag:
+        default: "Name of the label"
+      region:
+        default: "AWS region"
+      Ndays:
+        default: "days to keep"
+      Nweeks:
+        default: "weeks to keep"
+      Nmonths:
+        default: "months to keep"
 Parameters:
     instanceName:
-        Description: 'Required. The name of your instance to backup.'
-        Type: 'String'
+        Type: String
         Default: ''
+        Description: Required. The name of your instance to backup.
     labelTag:
-        Description: 'Required. Set it differently in your Lambdas for different instances. For "ABC" label it would be ABCKW8TAG6 the name of the backups.'
-        Type: 'String'
-        Default: 'ABC'
+        Type: String
+        Default: ABC
+        Description: Required. Set it differently in your Lambdas for different instances. For ABC label it would be ABCKW8TAG6 the name of the backups.
     region:
-        Description: 'Required. Region of your LightSail instance (it could be different from this backup solution).'
-        Type: 'String'
-        Default: 'us-east-1'
+        Type: String
+        Default: us-east-1
+        Description: Required. Region of your LightSail instance (it could be different from this backup solution).
     Ndays:
-        Description: 'Required. The minimum number of days to keep backups.'
-        Type: 'Number'
-        Default: '7'
+        Type: Number
+        Default: 7
+        Description: Required. The minimum number of days to keep backups.
     Nweeks:
-        Description: 'Required. The minimum number of weeks to keep backups.'
-        Type: 'Number'
-        Default: '4'
+        Type: Number
+        Default: 4
+        Description: Required. The minimum number of weeks to keep backups.
     Nmonths:
-        Description: 'Required. The minimum number of months to keep backups.'
-        Type: 'Number'
-        Default: '3'
+        Type: Number
+        Default: 3
+        Description: Required. The minimum number of months to keep backups.
 Resources:
   LightSailBackup:
     Properties:
-      Events:
       Handler: index.handler
       Runtime: nodejs14.x
       CodeUri: './index.js'
@@ -119,6 +124,3 @@ Resources:
                   - "lightsail:GetInstanceSnapshot"
                   - "lightsail:GetInstanceSnapshots"
                 Resource: '*'
-               
-Transform: AWS::Serverless-2016-10-31
-
